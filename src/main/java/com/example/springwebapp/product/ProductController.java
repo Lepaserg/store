@@ -16,8 +16,14 @@ public class ProductController {
 
     @RequestMapping("/")
     public String homeWithSession(Model model, HttpSession session) {
-        String sid = session.getId();
-        model.addAttribute("sid", sid);
+        int totalProductCount = 0;
+        Map<Long, Integer> basket = (Map<Long, Integer>) session.getAttribute("basket");
+        if(basket != null){
+            for(Map.Entry<Long, Integer> entry : basket.entrySet()) {
+                totalProductCount += entry.getValue();
+            }
+        }
+        model.addAttribute("totalProductCount", totalProductCount);
         return "index";
     }
 
